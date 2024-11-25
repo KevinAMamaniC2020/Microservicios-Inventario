@@ -1,0 +1,101 @@
+
+.next-button{
+    border-radius: 28px;
+    padding: 14px;
+    border-color: snow;
+}
+
+
+.texto{
+    display: flex;
+    padding-inline: 20px;
+
+}
+
+.espacioBoton{
+    display: flex;
+    justify-content: flex-end;
+    padding-inline: 20px;
+}
+
+
+.gestion-usuarios {
+    text-align: center;
+  
+    h1 {
+      margin-bottom: 20px;
+      font-size: 24px;
+      font-weight: bold;
+    }
+  
+    .add-button { 
+        border-radius: 28px;
+        padding: 14px;
+        background-color: #eb5656ba;
+        border-color:snow;
+    }
+  
+    .users-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr); /* Tres columnas */
+      grid-gap: 20px; /* Espacio entre tarjetas */
+      justify-content: center;
+      padding: 20px;
+    }
+  
+    .card {
+      background-color: snow;
+      border-radius: 8px;
+      padding: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+      text-align: center;
+  
+      .user-icon {
+        font-size: 50px;
+        height: unset;
+        width: unset;
+        color: #333;
+        margin-bottom: 10px;
+      }
+  
+      .user-name {
+        font-size: 16px;
+        font-weight: bold;
+      }
+  
+      .user-email {
+        font-size: 14px;
+        color: gray;
+      }
+  
+      .user-nickname {
+        font-size: 14px;
+        font-style: italic;
+        color: #555;
+      }
+    }
+  
+    .navigation {
+      margin-top: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+  
+      span {
+        font-size: 16px;
+        font-weight: bold;
+      }
+  
+      button {
+        background-color: #ffffff;
+        border-radius: 50%;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        &:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+  

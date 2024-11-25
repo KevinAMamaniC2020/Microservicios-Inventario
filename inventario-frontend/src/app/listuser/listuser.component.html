@@ -1,0 +1,44 @@
+<div class="gestion-usuarios">
+
+    <div class="texto"><h1>Gestión de Usuarios</h1></div>
+
+    <div class="espacioBoton">
+        <button class="add-button"  (click)="openRegistrationModal()">
+        <mat-icon>add</mat-icon>
+        </button>
+    </div>
+  
+    <!-- Contenedor de tarjetas con grid -->
+    <div style="
+    display: flex;
+    align-items: center;
+    justify-content: space-between;">
+        <div style="margin-inline: 40px;">
+            <button class="next-button" (click)="previousPage()" [disabled]="currentPage === 0">
+                <mat-icon>keyboard_arrow_left</mat-icon>
+            </button>
+        </div>
+
+        <div class="users-grid">
+            <div class="card" *ngFor="let user of paginatedUsers">
+                <mat-icon class="user-icon">account_circle</mat-icon>
+                <p class="user-name">{{ user.fullName }}</p>
+                <p class="user-email">{{ user.email }}</p>
+                <p class="user-nickname">{{ user.nickname }}</p>
+            </div>
+        </div>
+
+        <div style="margin-inline: 40px;">
+            <button class="next-button" (click)="nextPage()" [disabled]="(currentPage + 1) * pageSize >= users.length">
+                <mat-icon>keyboard_arrow_right</mat-icon>
+              </button>
+        </div>
+
+    </div>
+  
+    <!-- Navegación de paginación -->
+    <div class="navigation">
+      <!-- <span>Página {{ currentPage + 1 }} de {{ Math.ceil(users.length / pageSize) }}</span> -->
+    </div>
+  </div>
+  

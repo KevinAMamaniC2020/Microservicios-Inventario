@@ -1,0 +1,39 @@
+<h2 class="modal-title">Registrar Usuario</h2>
+
+<form [formGroup]="registrationForm" (ngSubmit)="onSubmit()" class="form-container">
+    <div style="display: flex;">
+        <div class="form-group">
+            <label for="fullName">Nombre Completo</label>
+            <input id="fullName" type="text" formControlName="fullName" required />
+        </div>
+
+        <div class="form-group">
+            <label for="username">Nombre de Usuario</label>
+            <input id="username" type="text" formControlName="username" required />
+        </div>
+    </div>
+
+    <div style="display: flex;">
+        <div class="form-group">
+            <label for="password">Contraseña</label>
+            <input id="password" type="password" formControlName="password" required />
+        </div>
+
+        <div class="form-group">
+            <label for="confirmPassword">Confirmar Contraseña</label>
+            <input id="confirmPassword" type="password" formControlName="confirmPassword" required />
+        </div>
+    </div>
+
+  <div class="form-group">
+    <label for="profileImage">Cargar Imagen</label>
+    <input id="profileImage" type="file" (change)="onImageSelected($event)" />
+    <img *ngIf="previewImage" [src]="previewImage" alt="Preview" class="image-preview" />
+  </div>
+
+  <div class="form-actions">
+    <button type="button" (click)="onCancel()">Cancelar</button>
+    <button type="submit">Registrar</button>
+  </div>
+</form>
+
