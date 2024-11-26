@@ -48,8 +48,7 @@ export class UseregisterComponent {
 
       if (formValue.profileImage) {
         formData.append('profile_image', formValue.profileImage); // Enviar el archivo directamente
-      }
-
+      } 
       this.registerUser(formData);
     }
   }
