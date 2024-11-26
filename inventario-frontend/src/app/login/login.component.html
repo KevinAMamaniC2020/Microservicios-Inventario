@@ -27,29 +27,29 @@
     <form (ngSubmit)="onRegister()">
       <div style="display: flex;">
         <div style="margin-right: 20px;">
-          <label for="name" class="text">Nombre</label>
+          <label for="name" class="text">Nombre*</label>
           <input type="text" id="name" [(ngModel)]="registerData.name" name="registerName" required>
         </div>
         <div>
-          <label for="username" class="text">Nombre de usuario</label>
+          <label for="username" class="text">Nombre de usuario*</label>
           <input type="text" id="username" [(ngModel)]="registerData.username" name="registerUsername" required>
         </div>
       </div>
 
       <div style="display: flex;">
         <div style="margin-right: 20px;">
-          <label for="password" class="text">Contraseña</label>
+          <label for="password" class="text">Contraseña*</label>
           <input type="password" id="password" [(ngModel)]="registerData.password" name="registerPassword" required>
         </div>
         <div>
-          <label for="confirmPassword" class="text">Confirmar Contraseña</label>
+          <label for="confirmPassword" class="text">Confirmar Contraseña*</label>
           <input type="password" id="confirmPassword" [(ngModel)]="registerData.confirmPassword" name="registerConfirmPassword" required>
         </div>
       </div>
 
       <div>
         <label class="text" for="profileImage">Cargar Imagen</label>
-        <input type="file" id="profileImage" (change)="onFileSelected($event)" name="registerProfileImage">
+        <input type="file" id="profileImage" (change)="onFileSelected($event)">
       </div>
       <button class="submit-btn" type="submit">Registrar</button>
       <button class="cancel-btn" type="button" (click)="toggleRegisterForm()">Cancelar</button>

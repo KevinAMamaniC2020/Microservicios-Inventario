@@ -7,12 +7,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-useregister',
   standalone: false,
-  
   templateUrl: './useregister.component.html',
-  styleUrl: './useregister.component.css'
+  styleUrls: ['./useregister.component.css'], // Nota: usa "styleUrls" para múltiples estilos
 })
 export class UseregisterComponent {
-
   registrationForm: FormGroup;
   previewImage: string | null = null; // Para mostrar la previsualización de la imagen
 
@@ -34,36 +32,61 @@ export class UseregisterComponent {
 
   onSubmit() {
     if (this.registrationForm.valid) {
-      const formData = new FormData();
       const formValue = this.registrationForm.value;
-
+  
       // Verificar coincidencia de contraseñas
       if (formValue.password !== formValue.confirmPassword) {
         this.snackBar.open('Las contraseñas no coinciden', 'Cerrar', { duration: 3000 });
         return;
       }
-
-      // Preparar los datos para el envío
-      formData.append('name', formValue.fullName);
-      formData.append('username', formValue.username);
-      formData.append('password', formValue.password);
+  
+      // Convertir imagen a base64 y agregar al FormData
       if (formValue.profileImage) {
-        formData.append('profile_image', formValue.profileImage);
+        const file = formValue.profileImage as File;
+        const reader = new FileReader();
+  
+        reader.onload = () => {
+          const base64Image = reader.result as string;
+          const formData = new FormData();
+          formData.append('name', formValue.fullName);
+          formData.append('username', formValue.username);
+          formData.append('password', formValue.password);
+          formData.append('profile_image', base64Image); // Base64 de la imagen
+  
+          this.registerUser(formData); // Llamar al servicio para registrar
+        };
+  
+        reader.onerror = () => {
+          this.snackBar.open('Error al procesar la imagen', 'Cerrar', { duration: 3000 });
+        };
+  
+        reader.readAsDataURL(file); // Leer archivo como base64
+      } else {
+        // Sin imagen, crear FormData directamente
+        const formData = new FormData();
+        formData.append('name', formValue.fullName);
+        formData.append('username', formValue.username);
+        formData.append('password', formValue.password);
+        formData.append('profile_image', ''); // Campo vacío si no hay imagen
+  
+        this.registerUser(formData);
       }
-
-      // Llamar al servicio para registrar el usuario
-      this.userService.registerUser(formData).subscribe({
-        next: (response) => {
-          this.snackBar.open('Usuario registrado con éxito', 'Cerrar', { duration: 3000 });
-          this.dialogRef.close(response); // Cierra el modal con la respuesta
-        },
-        error: (error) => {
-          console.error('Error al registrar usuario:', error);
-          this.snackBar.open('Error al registrar usuario', 'Cerrar', { duration: 3000 });
-        }
-      });
     }
   }
+  
+  registerUser(formData: FormData) {
+    this.userService.registerUser(formData).subscribe({
+      next: (response) => {
+        this.snackBar.open('Usuario registrado con éxito', 'Cerrar', { duration: 3000 });
+        this.dialogRef.close(response); // Cierra el modal con la respuesta
+      },
+      error: (error) => {
+        console.error('Error al registrar usuario:', error);
+        this.snackBar.open('Error al registrar usuario', 'Cerrar', { duration: 3000 });
+      },
+    });
+  }
+  
 
   onCancel() {
     this.dialogRef.close(); // Cierra el modal sin guardar nada
@@ -75,10 +98,9 @@ export class UseregisterComponent {
       this.registrationForm.patchValue({ profileImage: file });
       const reader = new FileReader();
       reader.onload = () => {
-        this.previewImage = reader.result as string;
+        this.previewImage = reader.result as string; // Mostrar la previsualización
       };
       reader.readAsDataURL(file);
     }
   }
-
 }

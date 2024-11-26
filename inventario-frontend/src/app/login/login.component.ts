@@ -50,17 +50,17 @@ export class LoginComponent {
     }
   }
 
-  // Lógica para registrar un usuario
   onRegister() {
     if (this.registerData.password === this.registerData.confirmPassword) {
       const formData = new FormData();
       formData.append('name', this.registerData.name);
       formData.append('username', this.registerData.username);
       formData.append('password', this.registerData.password);
+  
       if (this.registerData.profileImage) {
-        formData.append('profile_image', 'https://example.com/path/to/image.jpg');
+        formData.append('profile_image', this.registerData.profileImage); // Archivo seleccionado
       }
-
+  
       this.isLoading = true;
       this.userService.registerUser(formData).subscribe(
         (response) => {
@@ -79,6 +79,7 @@ export class LoginComponent {
       alert('Las contraseñas no coinciden. Por favor, verifica e inténtalo nuevamente.');
     }
   }
+  
 
   onFileSelected(event: any) {
     const file = event.target.files[0];
