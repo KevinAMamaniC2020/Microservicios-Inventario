@@ -14,7 +14,7 @@ export class LoginComponent {
 
 
   loginData = { username: '', password: '' };
-  registerData = { name: '', username: '', password: '', confirmPassword: '', profileImage: null };
+  registerData = { name: '', username: '', password: '', confirmPassword: '', profileImage: '' };
   isRegistering = false;
   isLoading = false; // Para manejar el estado de carga
 
@@ -24,6 +24,8 @@ export class LoginComponent {
   toggleRegisterForm() {
     this.isRegistering = !this.isRegistering;
   }
+
+  
 
   // Lógica para iniciar sesión
   onLogin() {
@@ -56,7 +58,8 @@ export class LoginComponent {
       formData.append('username', this.registerData.username);
       formData.append('password', this.registerData.password);
       if (this.registerData.profileImage) {
-        formData.append('profileImage', this.registerData.profileImage);
+        formData.append('profile_image', 'https://example.com/path/to/image.jpg');
+
       }
 
       this.isLoading = true;
@@ -79,6 +82,25 @@ export class LoginComponent {
   }
 
   onFileSelected(event: any) {
-    this.registerData.profileImage = event.target.files[0];
+    const file = event.target.files[0];
+    if (file) {
+      this.registerData.profileImage = file;
+      console.log('Imagen seleccionada:', file);
+    } else {
+      console.error('No se seleccionó ninguna imagen.');
+    }
+  }
+  
+
+  // Método para obtener usuarios y mostrarlos en la consola
+  getUsers() {
+    this.userService.getUsers().subscribe(
+      (users) => {
+        console.log('Lista de usuarios:', users);
+      },
+      (error) => {
+        console.error('Error al obtener los usuarios:', error);
+      }
+    );
   }
 }
