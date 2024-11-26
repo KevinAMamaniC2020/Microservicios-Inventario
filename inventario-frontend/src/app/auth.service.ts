@@ -22,6 +22,10 @@ export class AuthService {
     return true;  // Si hay un token, se asume que el usuario está autenticado
   }
 
+  setAuthenticated(token: string): void {
+    localStorage.setItem('userToken', token); // Guarda el token proporcionado
+  }
+
   // Método para hacer login con las credenciales
   login(username: string, password: string): boolean {
     // Verificar las credenciales contra los valores definidos

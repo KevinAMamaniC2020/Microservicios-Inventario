@@ -11,8 +11,8 @@ import { LayoutWithSidebarComponent } from './layout-with-sidebar/layout-with-si
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'inventario', component: InventarioComponent  },  // Ruta protegida
-  { path: 'list-user', component: ListuserComponent },
+  { path: 'inventario', component: InventarioComponent,  canActivate: [AuthGuard]},  // Ruta protegida
+  { path: 'list-user', component: ListuserComponent , canActivate: [AuthGuard]},
   { path: 'layout-with-sidebar', component: LayoutWithSidebarComponent },
 ];
 

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserserviceService } from '../services/userservice.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,11 @@ export class LoginComponent {
   isRegistering = false;
   isLoading = false; // Para manejar el estado de carga
 
-  constructor(private userService: UserserviceService, private router: Router) {}
+
+  constructor(private userService: UserserviceService,
+    private authService: AuthService,
+
+    private router: Router) {}
 
   // Cambiar entre el formulario de login y registro
   toggleRegisterForm() {
@@ -36,6 +41,8 @@ export class LoginComponent {
           this.isLoading = false;
           console.log('Login exitoso:', response);
           localStorage.setItem('token', response.token); // Guardar token si la API lo devuelve
+          this.authService.setAuthenticated(response.token);
+
           alert('Inicio de sesión exitoso.');
           this.router.navigate(['/inventario']); // Redirigir a la gestión de usuarios
         },
@@ -45,6 +52,7 @@ export class LoginComponent {
           alert('Error en las credenciales. Inténtalo nuevamente.');
         }
       );
+      
     } else {
       alert('Por favor, complete todos los campos.');
     }
@@ -58,7 +66,7 @@ export class LoginComponent {
       formData.append('password', this.registerData.password);
   
       if (this.registerData.profileImage) {
-        formData.append('profile_image', 'https://'+this.registerData.profileImage); // Archivo seleccionado
+        formData.append('profile_image', this.registerData.profileImage); // Archivo seleccionado
       }
   
       this.isLoading = true;
