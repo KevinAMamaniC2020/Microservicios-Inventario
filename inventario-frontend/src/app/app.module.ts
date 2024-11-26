@@ -18,6 +18,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { UseregisterComponent } from './listuser/useregister/useregister.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { InventarioComponent } from './inventario/inventario.component';
+import { LayoutWithSidebarComponent } from './layout-with-sidebar/layout-with-sidebar.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,8 @@ import { InventarioComponent } from './inventario/inventario.component';
     LoginComponent,
     UseregisterComponent,
     SidebarComponent,
-    InventarioComponent
+    InventarioComponent,
+    LayoutWithSidebarComponent
   ],
   imports: [
     BrowserModule,
