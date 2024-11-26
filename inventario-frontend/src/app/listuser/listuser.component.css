@@ -6,6 +6,12 @@
     background-color: #ffc1073d;
 }
 
+.profile-image {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
 
 .texto{
     display: flex;
@@ -54,13 +60,19 @@
       padding: 15px;
       box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
       text-align: center;
+      display: flex;
+      align-items: center;
+
   
       .user-icon {
-        font-size: 50px;
-        height: unset;
-        width: unset;
-        color: #333;
-        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 64px;
+        width: 64px;
+        border-radius: 50%;
+        background-color: #ffffff;
+        overflow: hidden;
       }
   
       .user-name {
