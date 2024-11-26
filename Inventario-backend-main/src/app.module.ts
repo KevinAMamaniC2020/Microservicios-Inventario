@@ -10,7 +10,6 @@ import { UsersModule } from './users/users.module';
     ProductsModule,
     InventoryServiceModule,
     PdfServiceModule,
-    UsersModule,
   ],
 })
 export class AppModule {}
