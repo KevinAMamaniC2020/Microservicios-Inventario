@@ -59,7 +59,6 @@ export class LoginComponent {
       formData.append('password', this.registerData.password);
       if (this.registerData.profileImage) {
         formData.append('profile_image', 'https://example.com/path/to/image.jpg');
-
       }
 
       this.isLoading = true;

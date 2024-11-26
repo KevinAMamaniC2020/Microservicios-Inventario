@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
+import { UserserviceService } from '../../userservice.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-useregister',
@@ -16,7 +18,9 @@ export class UseregisterComponent {
 
   constructor(
     private fb: FormBuilder,
-    private dialogRef: MatDialogRef<UseregisterComponent>
+    private dialogRef: MatDialogRef<UseregisterComponent>,
+    private userService: UserserviceService, // Inyectar el servicio
+    private snackBar: MatSnackBar // Para mostrar mensajes al usuario
   ) {
     // Crear formulario con validaciones básicas
     this.registrationForm = this.fb.group({
@@ -30,9 +34,34 @@ export class UseregisterComponent {
 
   onSubmit() {
     if (this.registrationForm.valid) {
-      const formData = this.registrationForm.value;
-      console.log('Datos del usuario:', formData); // Puedes enviar esto al backend
-      this.dialogRef.close(formData);
+      const formData = new FormData();
+      const formValue = this.registrationForm.value;
+
+      // Verificar coincidencia de contraseñas
+      if (formValue.password !== formValue.confirmPassword) {
+        this.snackBar.open('Las contraseñas no coinciden', 'Cerrar', { duration: 3000 });
+        return;
+      }
+
+      // Preparar los datos para el envío
+      formData.append('name', formValue.fullName);
+      formData.append('username', formValue.username);
+      formData.append('password', formValue.password);
+      if (formValue.profileImage) {
+        formData.append('profile_image', formValue.profileImage);
+      }
+
+      // Llamar al servicio para registrar el usuario
+      this.userService.registerUser(formData).subscribe({
+        next: (response) => {
+          this.snackBar.open('Usuario registrado con éxito', 'Cerrar', { duration: 3000 });
+          this.dialogRef.close(response); // Cierra el modal con la respuesta
+        },
+        error: (error) => {
+          console.error('Error al registrar usuario:', error);
+          this.snackBar.open('Error al registrar usuario', 'Cerrar', { duration: 3000 });
+        }
+      });
     }
   }
 
