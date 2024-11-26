@@ -13,45 +13,68 @@ import { Router } from '@angular/router';
 export class LoginComponent {
 
 
-  constructor(
-    private fb: FormBuilder,
-    private userService: UserserviceService,
-    private router: Router
-  ) {}
-
   loginData = { username: '', password: '' };
   registerData = { name: '', username: '', password: '', confirmPassword: '', profileImage: null };
   isRegistering = false;
+  isLoading = false; // Para manejar el estado de carga
 
+  constructor(private userService: UserserviceService, private router: Router) {}
+
+  // Cambiar entre el formulario de login y registro
   toggleRegisterForm() {
     this.isRegistering = !this.isRegistering;
   }
 
+  // Lógica para iniciar sesión
   onLogin() {
     if (this.loginData.username && this.loginData.password) {
+      this.isLoading = true;
       this.userService.loginUser(this.loginData).subscribe(
         (response) => {
+          this.isLoading = false;
           console.log('Login exitoso:', response);
-          localStorage.setItem('token', response.token); 
-          this.router.navigate(['/gestion-usuarios']); 
+          localStorage.setItem('token', response.token); // Guardar token si la API lo devuelve
+          alert('Inicio de sesión exitoso.');
+          this.router.navigate(['/listuser']); // Redirigir a la gestión de usuarios
         },
         (error) => {
+          this.isLoading = false;
           console.error('Error en login:', error);
-          alert('Credenciales incorrectas. Inténtalo nuevamente.');
+          alert('Error en las credenciales. Inténtalo nuevamente.');
         }
       );
     } else {
       alert('Por favor, complete todos los campos.');
     }
   }
-  
 
+  // Lógica para registrar un usuario
   onRegister() {
-    
     if (this.registerData.password === this.registerData.confirmPassword) {
-      console.log('Registrando usuario con', this.registerData);
+      const formData = new FormData();
+      formData.append('name', this.registerData.name);
+      formData.append('username', this.registerData.username);
+      formData.append('password', this.registerData.password);
+      if (this.registerData.profileImage) {
+        formData.append('profileImage', this.registerData.profileImage);
+      }
+
+      this.isLoading = true;
+      this.userService.registerUser(formData).subscribe(
+        (response) => {
+          this.isLoading = false;
+          console.log('Usuario registrado:', response);
+          alert('Registro exitoso. Ahora puedes iniciar sesión.');
+          this.toggleRegisterForm(); // Cambiar al formulario de login
+        },
+        (error) => {
+          this.isLoading = false;
+          console.error('Error en registro:', error);
+          alert('Error al registrar el usuario. Intenta nuevamente.');
+        }
+      );
     } else {
-      console.error('Las contraseñas no coinciden');
+      alert('Las contraseñas no coinciden. Por favor, verifica e inténtalo nuevamente.');
     }
   }
 

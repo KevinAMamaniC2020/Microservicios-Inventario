@@ -18,14 +18,14 @@ export class UserserviceService {
     return this.http.get<any[]>(`${this.baseUrl}`);
   }
 
-  //Registrar un nuevo usuario
-  registerUser(user: { name: string; username: string; password: string }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register`, user);
-  }
-
   //Iniciar sesión
   loginUser(credentials: { username: string; password: string }): Observable<any> {
     return this.http.post(`${this.baseUrl}/login`, credentials);
+  }
+
+  //Registrar un nuevo usuario
+  registerUser(user: FormData): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register`, user);
   }
 
   //Eliminar un usuario por ID
