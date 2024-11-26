@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProductService } from '../services/product.service';
+import { Product } from '../services/product.service';
 
 @Component({
   selector: 'app-inventario',
@@ -15,62 +15,64 @@ export class InventarioComponent {
   // Formulario reactivo
   registroForm: FormGroup;
 
-  // Datos iniciales de los productos
-  items = [
-    {
-      nombre: 'Lápiz',
-      descripcion: 'Lápiz de grafito HB',
-      cantidad: 100,
-      precioUnitario: 0.5,
-      categorias: ['Oficina', 'Escritura'],
-    },
-    {
-      nombre: 'Cuaderno',
-      descripcion: 'Cuaderno A4 100 hojas',
-      cantidad: 50,
-      precioUnitario: 2.5,
-      categorias: ['Oficina', 'Papelería'],
-    },
-    {
-      nombre: 'Tijeras',
-      descripcion: 'Tijeras de acero inoxidable',
-      cantidad: 30,
-      precioUnitario: 1.2,
-      categorias: ['Oficina', 'Corte'],
-    },
-  ];
+  // Lista de productos
+  items: Product[] = [];
+  filteredItems: Product[] = []; // Copia inicial para filtrado
 
-  filteredItems = [...this.items]; // Copia inicial para filtrado
+  constructor(
+    private fb: FormBuilder,
+    private productService: ProductService // Inyecta el servicio
+  ) {
+    // Crear el formulario con los controles
+    this.registroForm = this.fb.group({
+      code: ['', [Validators.required]],
+      name: ['', [Validators.required]],
+      description: ['', [Validators.required]],
+      quantity: ['', [Validators.required, Validators.min(1)]],
+      price: ['', [Validators.required, Validators.min(0)]],
+      category: ['', [Validators.required]]
+    });
+
+    // Cargar los productos al inicializar el componente
+    this.loadProducts();
+  }
+
+  // Método para cargar productos desde el servidor
+  loadProducts() {
+    this.productService.getProducts().subscribe(
+      (data) => {
+        this.items = data;
+        this.filteredItems = [...this.items]; // Copia inicial para filtrado
+      },
+      (error) => {
+        console.error('Error al cargar los productos', error);
+      }
+    );
+  }
 
   // Método para filtrar los elementos
   filterItems() {
     this.filteredItems = this.items.filter((item) =>
-      item.nombre.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
-      item.categorias.some((cat) =>
-        cat.toLowerCase().includes(this.searchTerm.toLowerCase())
-      )
+      item.name.toLowerCase().includes(this.searchTerm.toLowerCase()) ||
+      item.category.toLowerCase().includes(this.searchTerm.toLowerCase())
     );
   }
 
-  constructor(private fb: FormBuilder) {
-    // Crear el formulario con los controles
-    this.registroForm = this.fb.group({
-      nombre: ['', [Validators.required]],
-      categoria: ['', [Validators.required]],
-      descripcion: ['', [Validators.required]],
-      cantidad: ['', [Validators.required, Validators.min(1)]],
-      precioUnitario: ['', [Validators.required, Validators.min(0)]]
-    });
-  }
-
-  // Método para registrar el producto
+  // Método para registrar un nuevo producto
   registrarProducto() {
     if (this.registroForm.valid) {
-      const newProduct = this.registroForm.value;
-      this.items.push(newProduct);
-      this.filteredItems.push(newProduct);
-      console.log('Producto registrado:', newProduct);
-      this.registroForm.reset(); // Limpiar el formulario
+      const newProduct: Product = this.registroForm.value;
+      this.productService.addProduct(newProduct).subscribe(
+        (product) => {
+          this.items.push(product);  // Agregar el producto a la lista
+          this.filteredItems.push(product);  // Agregar el producto a la lista filtrada
+          console.log('Producto registrado:', product);
+          this.registroForm.reset(); // Limpiar el formulario
+        },
+        (error) => {
+          console.error('Error al registrar el producto', error);
+        }
+      );
     } else {
       console.log('Formulario no válido');
     }
@@ -79,5 +81,20 @@ export class InventarioComponent {
   // Método para cancelar el registro
   cancelarRegistro() {
     this.registroForm.reset(); // Limpiar el formulario
+  }
+
+  // Método para eliminar un producto
+  eliminarProducto(code: string) {
+    this.productService.deleteProduct(code).subscribe(
+      () => {
+        // Eliminar el producto de la lista local
+        this.items = this.items.filter(product => product.code !== code);
+        this.filteredItems = this.filteredItems.filter(product => product.code !== code);
+        console.log(`Producto con código ${code} eliminado.`);
+      },
+      (error) => {
+        console.error('Error al eliminar el producto', error);
+      }
+    );
   }
 }
