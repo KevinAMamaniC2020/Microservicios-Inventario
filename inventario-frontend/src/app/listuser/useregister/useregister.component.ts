@@ -33,44 +33,24 @@ export class UseregisterComponent {
   onSubmit() {
     if (this.registrationForm.valid) {
       const formValue = this.registrationForm.value;
-  
+
       // Verificar coincidencia de contraseñas
       if (formValue.password !== formValue.confirmPassword) {
         this.snackBar.open('Las contraseñas no coinciden', 'Cerrar', { duration: 3000 });
         return;
       }
-  
-      // Convertir imagen a base64 y agregar al FormData
+
+      // Preparar el FormData
+      const formData = new FormData();
+      formData.append('name', formValue.fullName);
+      formData.append('username', formValue.username);
+      formData.append('password', formValue.password);
+
       if (formValue.profileImage) {
-        const file = formValue.profileImage as File;
-        const reader = new FileReader();
-  
-        reader.onload = () => {
-          const base64Image = reader.result as string;
-          const formData = new FormData();
-          formData.append('name', formValue.fullName);
-          formData.append('username', formValue.username);
-          formData.append('password', formValue.password);
-          formData.append('profile_image', base64Image); // Base64 de la imagen
-  
-          this.registerUser(formData); // Llamar al servicio para registrar
-        };
-  
-        reader.onerror = () => {
-          this.snackBar.open('Error al procesar la imagen', 'Cerrar', { duration: 3000 });
-        };
-  
-        reader.readAsDataURL(file); // Leer archivo como base64
-      } else {
-        // Sin imagen, crear FormData directamente
-        const formData = new FormData();
-        formData.append('name', formValue.fullName);
-        formData.append('username', formValue.username);
-        formData.append('password', formValue.password);
-        formData.append('profile_image', ''); // Campo vacío si no hay imagen
-  
-        this.registerUser(formData);
+        formData.append('profile_image', formValue.profileImage); // Enviar el archivo directamente
       }
+
+      this.registerUser(formData);
     }
   }
   
@@ -95,10 +75,12 @@ export class UseregisterComponent {
   onImageSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
-      this.registrationForm.patchValue({ profileImage: file });
+      this.registrationForm.patchValue({ profileImage: file }); // Actualizar el control del formulario
+      this.registrationForm.get('profileImage')?.updateValueAndValidity(); // Validar cambios
+
       const reader = new FileReader();
       reader.onload = () => {
-        this.previewImage = reader.result as string; // Mostrar la previsualización
+        this.previewImage = reader.result as string; // Mostrar previsualización
       };
       reader.readAsDataURL(file);
     }
