@@ -1,62 +1,58 @@
 <div class="login-container">
-    <!-- Imagen de login -->
-    <div class="login-image">
-      <mat-icon class="user-icon">account_circle</mat-icon>
-    </div>
-  
-    <!-- Formulario de login -->
-    <div *ngIf="!isRegistering" class="login-form">
-      <form (ngSubmit)="onLogin()">
-        <div class="form-group">
-          <label for="username" class="text">Usuario</label>
-          <input type="text" id="username" [(ngModel)]="loginData.username" name="username" required>
-        </div>
-        <div class="form-group">
-          <label for="password" class="text" >Contraseña</label>
-          <input type="password" id="password" [(ngModel)]="loginData.password" name="password" required>
-        </div>
-        <button class="submit-btn" type="submit">Iniciar sesión</button>
-      </form>
-      <div>
-        <p class="register-link" (click)="toggleRegisterForm()">Si no tienes cuenta, regístrate</p>
+  <!-- Imagen de login -->
+  <div class="login-image">
+    <mat-icon class="user-icon">account_circle</mat-icon>
+  </div>
+
+  <!-- Formulario de login -->
+  <div *ngIf="!isRegistering" class="login-form">
+    <form (ngSubmit)="onLogin()">
+      <div class="form-group">
+        <label for="username" class="text">Usuario</label>
+        <input type="text" id="username" [(ngModel)]="loginData.username" name="loginUsername" required>
       </div>
-    </div>
-  
-    <!-- Formulario de registro -->
-    <div *ngIf="isRegistering" class="register-form">
-      <form (ngSubmit)="onRegister()">
-        <div style="display: flex;">
-
-          <div style="margin-right: 20px;" >
-            <label for="name" class="text">Nombre</label>
-            <input type="text" id="name" [(ngModel)]="registerData.name" name="name" required>
-          </div>
-
-          <div >
-            <label for="username" class="text">Nombre de usuario</label>
-            <input type="text" id="username" [(ngModel)]="registerData.username" name="username" required>
-          </div>
-        </div>
-
-        <div style="display: flex;">
-
-          <div style="margin-right: 20px;" >
-            <label for="password" class="text">Contraseña</label>
-            <input type="password" id="password" [(ngModel)]="registerData.password" name="password" required>
-          </div>
-          <div >
-            <label for="confirmPassword" class="text">Confirmar Contraseña</label>
-            <input type="password" id="confirmPassword" [(ngModel)]="registerData.confirmPassword" name="confirmPassword" required>
-          </div>
-        </div>
-
-        <div>
-          <label class="text" for="profileImage">Cargar Imagen</label>
-          <input type="file" id="profileImage" (change)="onFileSelected($event)">
-        </div>
-        <button class="submit-btn"  type="submit">Registrar</button>
-        <button class="cancel-btn" type="button" (click)="toggleRegisterForm()">Cancelar</button>
-      </form>
+      <div class="form-group">
+        <label for="password" class="text">Contraseña</label>
+        <input type="password" id="password" [(ngModel)]="loginData.password" name="loginPassword" required>
+      </div>
+      <button class="submit-btn" type="submit">Iniciar sesión</button>
+    </form>
+    <div>
+      <p class="register-link" (click)="toggleRegisterForm()">Si no tienes cuenta, regístrate</p>
     </div>
   </div>
-  
+
+  <!-- Formulario de registro -->
+  <div *ngIf="isRegistering" class="register-form">
+    <form (ngSubmit)="onRegister()">
+      <div style="display: flex;">
+        <div style="margin-right: 20px;">
+          <label for="name" class="text">Nombre*</label>
+          <input type="text" id="name" [(ngModel)]="registerData.name" name="registerName" required>
+        </div>
+        <div>
+          <label for="username" class="text">Nombre de usuario*</label>
+          <input type="text" id="username" [(ngModel)]="registerData.username" name="registerUsername" required>
+        </div>
+      </div>
+
+      <div style="display: flex;">
+        <div style="margin-right: 20px;">
+          <label for="password" class="text">Contraseña*</label>
+          <input type="password" id="password" [(ngModel)]="registerData.password" name="registerPassword" required>
+        </div>
+        <div>
+          <label for="confirmPassword" class="text">Confirmar Contraseña*</label>
+          <input type="password" id="confirmPassword" [(ngModel)]="registerData.confirmPassword" name="registerConfirmPassword" required>
+        </div>
+      </div>
+
+      <div>
+        <label class="text" for="profileImage">Cargar Imagen</label>
+        <input type="file" id="profileImage" (change)="onFileSelected($event)">
+      </div>
+      <button class="submit-btn" type="submit">Registrar</button>
+      <button class="cancel-btn" type="button" (click)="toggleRegisterForm()">Cancelar</button>
+    </form>
+  </div>
+</div>

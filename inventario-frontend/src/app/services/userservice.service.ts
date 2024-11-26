@@ -8,24 +8,24 @@ import { Observable } from 'rxjs';
 })
 export class UserserviceService {
 
-  private baseUrl = 'https://microservices-tais.epis-dev.site/api/users';
+  private baseUrl = 'https://microservices-tais.epis-dev.site';
 
   constructor(private http: HttpClient) { }
 
 
   //Obtener todos los usuarios
   getUsers(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.baseUrl}`);
+    return this.http.get<any[]>(`${this.baseUrl}/users/`);
   }
 
   //Iniciar sesión
   loginUser(credentials: { username: string; password: string }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/login`, credentials);
+    return this.http.post(`${this.baseUrl}/login/`, credentials);
   }
 
   //Registrar un nuevo usuario
   registerUser(user: FormData): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register`, user);
+    return this.http.post(`${this.baseUrl}/register/`, user);
   }
 
   //Eliminar un usuario por ID

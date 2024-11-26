@@ -4,14 +4,16 @@ import { LoginComponent } from './login/login.component';
 import { ListuserComponent } from './listuser/listuser.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { InventarioComponent } from './inventario/inventario.component';
+import { AuthGuard } from './auth.guard';  // Importa el guard
+import { LayoutWithSidebarComponent } from './layout-with-sidebar/layout-with-sidebar.component'; // Importa el layout
+
 
 const routes: Routes = [
+  { path: '', redirectTo: '/login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'listuser', component: ListuserComponent },
-  { path: 'sidebar', component: SidebarComponent },
-  { path: 'inventario', component: InventarioComponent }
-
-
+  { path: 'inventario', component: InventarioComponent  },  // Ruta protegida
+  { path: 'list-user', component: ListuserComponent },
+  { path: 'layout-with-sidebar', component: LayoutWithSidebarComponent },
 ];
 
 @NgModule({

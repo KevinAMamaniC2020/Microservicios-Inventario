@@ -1,4 +1,4 @@
-<div class="gestion-usuarios">
+<div class="gestion-usuarios mt-5">
 
     <div class="texto"><h1>Gestión de Usuarios</h1></div>
 
@@ -9,10 +9,7 @@
     </div>
   
     <!-- Contenedor de tarjetas con grid -->
-    <div style="
-    display: flex;
-    align-items: center;
-    justify-content: space-between;">
+    <div style="display: flex;align-items: center;justify-content: space-between;background: #80808012;margin: 20px;border-radius: 10px;">
         <div style="margin-inline: 40px;">
             <button class="next-button" (click)="previousPage()" [disabled]="currentPage === 0">
                 <mat-icon>keyboard_arrow_left</mat-icon>
@@ -22,9 +19,9 @@
         <div class="users-grid">
             <div class="card" *ngFor="let user of paginatedUsers">
                 <mat-icon class="user-icon">account_circle</mat-icon>
-                <p class="user-name">{{ user.fullName }}</p>
-                <p class="user-email">{{ user.email }}</p>
-                <p class="user-nickname">{{ user.nickname }}</p>
+                <p class="user-name">{{ user.name || 'Sin Nombre'}}</p>
+                <p class="user-email">{{ user.email || 'No especificado' }}</p>
+                <p class="user-nickname">{{ user.username }}</p>
             </div>
         </div>
 

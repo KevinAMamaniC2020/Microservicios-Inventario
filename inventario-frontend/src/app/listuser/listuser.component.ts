@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UseregisterComponent } from './useregister/useregister.component';
+import { UserserviceService } from '../services/userservice.service';
 
 
 @Component({
@@ -12,25 +13,36 @@ import { UseregisterComponent } from './useregister/useregister.component';
 })
 export class ListuserComponent {
 
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private userService: UserserviceService) {}
   
-  users = [
-    { fullName: 'Christian Ziegler Pacori Paucar', email: 'cpacori@unsa.edu.pe', nickname: 'Steven' },
-    { fullName: 'Josue Daniel Huashuayo Sivincha', email: 'jhuashuayo@unsa.edu.pe', nickname: 'Chema' },
-    { fullName: 'Juan Pedro Vidal Pastor Pastor', email: 'jpastorp@unsa.edu.pe', nickname: 'Juancho' },
-    { fullName: 'Jhon Yosef Luna Quispe', email: 'jlunaq@unsa.edu.pe', nickname: 'Jhonny Boy' },
-    { fullName: 'Kevin Alonso Mamani Condori', email: 'kmamanicondo@unsa.edu.pe', nickname: 'Kev' },
-    { fullName: 'Carlos Perez Soto', email: 'cperez@unsa.edu.pe', nickname: 'Carlitos' },
-    { fullName: 'Ana Maria Lopez', email: 'alopez@unsa.edu.pe', nickname: 'Anita' },
-    { fullName: 'Miguel Ángel Torres', email: 'mtorres@unsa.edu.pe', nickname: 'Mike' },
-    { fullName: 'Lucía Fernández Paredes', email: 'lfernandez@unsa.edu.pe', nickname: 'Luci' }
-  ];
-
-  pageSize = 6;
-  currentPage = 0;
+  users: any[] = []; // Lista de usuarios
+  pageSize = 6; // Tamaño de página
+  currentPage = 0; // Página actual
+  isLoading = false; // Indicador de carga
+  errorMessage = ''; // Mensaje de error
 
   // Exponer Math en el contexto del componente
   Math = Math;
+
+  ngOnInit(): void {
+    this.loadUsers();
+  }
+
+   // Método para cargar usuarios desde el servicio
+   loadUsers(): void {
+    this.isLoading = true;
+    this.userService.getUsers().subscribe({
+      next: (data) => {
+        this.users = data;
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.errorMessage = 'Error al cargar usuarios';
+        console.error('Error:', error);
+        this.isLoading = false;
+      }
+    });
+  }
 
   get paginatedUsers() {
     const startIndex = this.currentPage * this.pageSize;
@@ -57,6 +69,7 @@ export class ListuserComponent {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Usuario registrado:', result); // Aquí puedes actualizar la lista de usuarios
+        this.loadUsers();
       }
     });
   }
