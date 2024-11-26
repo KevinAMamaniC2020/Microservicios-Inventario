@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { UseregisterComponent } from './useregister/useregister.component';
-import { UserserviceService } from '../userservice.service';
+import { UserserviceService } from '../services/userservice.service';
 
 
 @Component({

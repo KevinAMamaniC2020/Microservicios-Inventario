@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserserviceService } from '../userservice.service';
+import { UserserviceService } from '../services/userservice.service';
 import { Router } from '@angular/router';
 
 @Component({
@@ -37,7 +37,7 @@ export class LoginComponent {
           console.log('Login exitoso:', response);
           localStorage.setItem('token', response.token); // Guardar token si la API lo devuelve
           alert('Inicio de sesión exitoso.');
-          this.router.navigate(['/listuser']); // Redirigir a la gestión de usuarios
+          this.router.navigate(['/inventario']); // Redirigir a la gestión de usuarios
         },
         (error) => {
           this.isLoading = false;
@@ -68,7 +68,7 @@ export class LoginComponent {
           console.log('Usuario registrado:', response);
           alert('Registro exitoso. Ahora puedes iniciar sesión.');
           this.toggleRegisterForm(); // Cambiar al formulario de login
-          
+
         },
         (error) => {
           this.isLoading = false;

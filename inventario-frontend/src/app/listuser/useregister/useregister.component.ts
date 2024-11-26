@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef } from '@angular/material/dialog';
-import { UserserviceService } from '../../userservice.service';
+import { UserserviceService } from '../../services/userservice.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
