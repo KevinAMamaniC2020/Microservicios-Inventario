@@ -16,13 +16,17 @@ import { LoginComponent } from './login/login.component';
 import { ListuserComponent } from './listuser/listuser.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { UseregisterComponent } from './listuser/useregister/useregister.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { InventarioComponent } from './inventario/inventario.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListuserComponent,
     LoginComponent,
-    UseregisterComponent
+    UseregisterComponent,
+    SidebarComponent,
+    InventarioComponent
   ],
   imports: [
     BrowserModule,
