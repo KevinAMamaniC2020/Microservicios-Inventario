@@ -68,6 +68,7 @@ export class LoginComponent {
           console.log('Usuario registrado:', response);
           alert('Registro exitoso. Ahora puedes iniciar sesión.');
           this.toggleRegisterForm(); // Cambiar al formulario de login
+          
         },
         (error) => {
           this.isLoading = false;

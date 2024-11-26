@@ -20,7 +20,7 @@ export class UserserviceService {
 
   //Iniciar sesión
   loginUser(credentials: { username: string; password: string }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/login/login/`, credentials);
+    return this.http.post(`${this.baseUrl}/login/`, credentials);
   }
 
   //Registrar un nuevo usuario

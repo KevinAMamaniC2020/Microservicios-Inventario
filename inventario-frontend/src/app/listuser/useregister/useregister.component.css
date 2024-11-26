@@ -54,13 +54,13 @@
   }
   
   button[type="button"] {
-    background-color: #f5f5f5;
-    color: #333;
+    background-color: #6c757d;
+    color: white;
   }
   
   button[type="submit"] {
-    background-color: #eb5656ba;
-    color: white;
+    background-color: #ffc107;
+    color: black;
   }
 
   ::ng-deep .mdc-dialog--open .mat-mdc-dialog-surface, .mdc-dialog--closing .mat-mdc-dialog-surface{
