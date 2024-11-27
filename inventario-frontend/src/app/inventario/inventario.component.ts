@@ -15,6 +15,7 @@ export class InventarioComponent {
   
   // Formulario reactivo
   registroForm: FormGroup;
+  
 
   // Lista de productos
   items: Product[] = [];
@@ -38,6 +39,7 @@ export class InventarioComponent {
     // Cargar los productos al inicializar el componente
     this.loadProducts();
   }
+  
 
   // Método para cargar productos desde el servidor
   loadProducts() {
@@ -64,6 +66,17 @@ export class InventarioComponent {
   registrarProducto() {
     if (this.registroForm.valid) {
       const newProduct: Product = this.registroForm.value;
+      
+      // Verificar si el nombre ya existe en la lista de productos
+      const isNameDuplicate = this.items.some(item => item.name.toLowerCase() === newProduct.name.toLowerCase());
+  
+      if (isNameDuplicate) {
+        console.log('El nombre del producto ya existe.');
+        alert('El nombre del producto ya existe. Por favor, ingrese un nombre diferente.');
+        return; // Salir de la función si el nombre está duplicado
+      }
+  
+      // Si el nombre no está duplicado, proceder con la creación del producto
       this.productService.addProduct(newProduct).subscribe(
         (product) => {
           this.items.push(product);  // Agregar el producto a la lista
@@ -79,6 +92,7 @@ export class InventarioComponent {
       console.log('Formulario no válido');
     }
   }
+  
 
   // Método para cancelar el registro
   cancelarRegistro() {
