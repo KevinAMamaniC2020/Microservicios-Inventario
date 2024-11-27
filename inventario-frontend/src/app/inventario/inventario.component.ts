@@ -27,7 +27,7 @@ export class InventarioComponent {
   ) {
     // Crear el formulario con los controles
     this.registroForm = this.fb.group({
-      code: ['', [Validators.required]],
+      code: [''],
       name: ['', [Validators.required]],
       description: ['', [Validators.required]],
       quantity: ['', [Validators.required, Validators.min(1)]],
