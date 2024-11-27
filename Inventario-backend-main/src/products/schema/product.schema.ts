@@ -3,8 +3,8 @@ import { Document } from 'mongoose';
 
 @Schema()
 export class Product extends Document {
-  @Prop({ required: true, unique: true })
-  code: string;
+  @Prop({ unique: true }) // Campo `code` autogenerado
+  code: number;
 
   @Prop({ required: true })
   name: string;

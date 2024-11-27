@@ -2,24 +2,33 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Product } from './schema/product.schema';
+import { CreateProductDto } from './dto/create-product.dto';
 
 @Injectable()
 export class ProductsService {
   constructor(@InjectModel(Product.name) private readonly productModel: Model<Product>) {}
 
-  async create(createProductDto: any): Promise<Product> {
-    const product = new this.productModel(createProductDto);
+  // Crear un nuevo producto con autoincremento manual
+  async create(createProductDto: CreateProductDto): Promise<Product> {
+    // Busca el último producto creado para determinar el próximo valor de `code`
+    const lastProduct = await this.productModel.findOne({}, {}, { sort: { code: -1 } }).exec();
+    const nextCode = lastProduct ? lastProduct.code + 1 : 1;
+
+    // Crea el producto con el nuevo valor de `code`
+    const product = new this.productModel({ ...createProductDto, code: nextCode });
     return product.save();
   }
 
+  // Obtener todos los productos
   async findAll(): Promise<Product[]> {
     return this.productModel.find().exec();
   }
 
-  async updateInventory(code: string, quantity: number): Promise<Product> {
+  // Actualizar inventario
+  async updateInventory(code: number, quantity: number): Promise<Product> {
     const product = await this.productModel.findOne({ code }).exec();
     if (!product) {
-      throw new NotFoundException(`Producto con codigo "${code}" no encontrado.`);
+      throw new NotFoundException(`Producto con código "${code}" no encontrado.`);
     }
     product.quantity += quantity;
     if (product.quantity < 0) {
@@ -28,22 +37,12 @@ export class ProductsService {
     return product.save();
   }
 
-  async filterProducts(filter: any): Promise<Product[]> {
-    const query = {};
-    if (filter.category) query['category'] = filter.category;
-    if (filter.minPrice || filter.maxPrice) {
-      query['price'] = {};
-      if (filter.minPrice) query['price'].$gte = filter.minPrice;
-      if (filter.maxPrice) query['price'].$lte = filter.maxPrice;
-    }
-    return this.productModel.find(query).exec();
-  }
-
-  async deleteProduct(code: string): Promise<{ message: string }> {
+  // Eliminar producto
+  async deleteProduct(code: number): Promise<{ message: string }> {
     const result = await this.productModel.deleteOne({ code }).exec();
     if (result.deletedCount === 0) {
-      throw new NotFoundException(`Producto con codigo "${code}" no encontrado.`);
+      throw new NotFoundException(`Producto con código "${code}" no encontrado.`);
     }
-    return { message: `Producto con codigo "${code}" eliminado con éxito.` };
+    return { message: `Producto con código "${code}" eliminado con éxito.` };
   }
 }
