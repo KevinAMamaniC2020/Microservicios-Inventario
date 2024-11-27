@@ -1,8 +1,8 @@
-import { IsString, IsInt, Min } from 'class-validator';
+import { IsInt, Min } from 'class-validator';
 
 export class UpdateInventoryDto {
-  @IsString()
-  code: string;
+  @IsInt()
+  code: number;
 
   @IsInt()
   @Min(0)

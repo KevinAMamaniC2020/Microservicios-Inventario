@@ -7,7 +7,7 @@ export class InventoryServiceController {
 
   @Post('update')
   async updateInventory(
-    @Body() updateInventoryDto: { code: string; quantity: number; type: 'in' | 'out' },
+    @Body() updateInventoryDto: { id: number; quantity: number; type: 'in' | 'out' },
   ) {
     return this.inventoryService.updateInventory(updateInventoryDto);
   }

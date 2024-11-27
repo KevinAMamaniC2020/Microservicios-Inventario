@@ -5,14 +5,14 @@ import { ProductsRepository } from '../../products/products.repository';
 export class InventoryService {
   constructor(private readonly productsRepository: ProductsRepository) {}
 
-  async updateInventory({ code, quantity, type }: { code: string; quantity: number; type: 'in' | 'out' }) {
+  async updateInventory({ id, quantity, type }: { id: number; quantity: number; type: 'in' | 'out' }) {
     if (quantity <= 0) {
       throw new BadRequestException('La cantidad debe ser superior a cero.');
     }
 
-    const product = await this.productsRepository.findOne(code);
+    const product = await this.productsRepository.findOne(id);
     if (!product) {
-      throw new NotFoundException(`Producto con codigo "${code}" no encontrado.`);
+      throw new NotFoundException(`Producto con codigo "${id}" no encontrado.`);
     }
 
     const newQuantity = type === 'in' ? product.quantity + quantity : product.quantity - quantity;
@@ -20,6 +20,6 @@ export class InventoryService {
       throw new BadRequestException('Stock Insuficiente para esta operación.');
     }
 
-    return this.productsRepository.update(code, { quantity: newQuantity });
+    return this.productsRepository.update(id, { quantity: newQuantity });
   }
 }
