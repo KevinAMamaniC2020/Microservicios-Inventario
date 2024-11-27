@@ -11,7 +11,7 @@
 /inventario-frontend/node_modules/
 npm-debug.log
 yarn-error.log
-
+/Inventary/db.sqlite3
 # IDEs and editors
 .idea/
 .project
