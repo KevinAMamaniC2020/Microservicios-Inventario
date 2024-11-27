@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { MatSpinner } from '@angular/material/progress-spinner';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,13 +17,19 @@ import { LoginComponent } from './login/login.component';
 import { ListuserComponent } from './listuser/listuser.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { UseregisterComponent } from './listuser/useregister/useregister.component';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { InventarioComponent } from './inventario/inventario.component';
+import { LayoutWithSidebarComponent } from './layout-with-sidebar/layout-with-sidebar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ListuserComponent,
     LoginComponent,
-    UseregisterComponent
+    UseregisterComponent,
+    SidebarComponent,
+    InventarioComponent,
+    LayoutWithSidebarComponent
   ],
   imports: [
     BrowserModule,
@@ -35,7 +42,8 @@ import { UseregisterComponent } from './listuser/useregister/useregister.compone
     MatInputModule,
     MatButtonModule,
     ReactiveFormsModule,
-    HttpClientModule
+    HttpClientModule,
+    MatSpinner
   
   ],
   providers: [

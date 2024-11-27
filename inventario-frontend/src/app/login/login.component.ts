@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { UserserviceService } from '../userservice.service';
+import { UserserviceService } from '../services/userservice.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-login',
@@ -13,49 +14,102 @@ import { Router } from '@angular/router';
 export class LoginComponent {
 
 
-  constructor(
-    private fb: FormBuilder,
-    private userService: UserserviceService,
-    private router: Router
-  ) {}
-
   loginData = { username: '', password: '' };
-  registerData = { name: '', username: '', password: '', confirmPassword: '', profileImage: null };
+  registerData = { name: '', username: '', password: '', confirmPassword: '', profileImage: '' };
   isRegistering = false;
+  isLoading = false; // Para manejar el estado de carga
 
+
+  constructor(private userService: UserserviceService,
+    private authService: AuthService,
+
+    private router: Router) {}
+
+  // Cambiar entre el formulario de login y registro
   toggleRegisterForm() {
     this.isRegistering = !this.isRegistering;
   }
 
+  
+
+  // Lógica para iniciar sesión
   onLogin() {
     if (this.loginData.username && this.loginData.password) {
+      this.isLoading = true;
       this.userService.loginUser(this.loginData).subscribe(
         (response) => {
+          this.isLoading = false;
           console.log('Login exitoso:', response);
-          localStorage.setItem('token', response.token); 
-          this.router.navigate(['/gestion-usuarios']); 
+          localStorage.setItem('token', response.token); // Guardar token si la API lo devuelve
+          this.authService.setAuthenticated(response.token);
+
+          alert('Inicio de sesión exitoso.');
+          this.router.navigate(['/inventario']); // Redirigir a la gestión de usuarios
         },
         (error) => {
+          this.isLoading = false;
           console.error('Error en login:', error);
-          alert('Credenciales incorrectas. Inténtalo nuevamente.');
+          alert('Error en las credenciales. Inténtalo nuevamente.');
         }
       );
+      
     } else {
       alert('Por favor, complete todos los campos.');
     }
   }
-  
 
   onRegister() {
-    
     if (this.registerData.password === this.registerData.confirmPassword) {
-      console.log('Registrando usuario con', this.registerData);
+      const formData = new FormData();
+      formData.append('name', this.registerData.name);
+      formData.append('username', this.registerData.username);
+      formData.append('password', this.registerData.password);
+  
+      if (this.registerData.profileImage) {
+        formData.append('profile_image', this.registerData.profileImage); // Archivo seleccionado
+      }
+  
+      this.isLoading = true;
+      this.userService.registerUser(formData).subscribe(
+        (response) => {
+          this.isLoading = false;
+          console.log('Usuario registrado:', response);
+          alert('Registro exitoso. Ahora puedes iniciar sesión.');
+          this.toggleRegisterForm(); // Cambiar al formulario de login
+
+        },
+        (error) => {
+          this.isLoading = false;
+          console.error('Error en registro:', error);
+          alert('Error al registrar el usuario. Intenta nuevamente.');
+        }
+      );
     } else {
-      console.error('Las contraseñas no coinciden');
+      alert('Las contraseñas no coinciden. Por favor, verifica e inténtalo nuevamente.');
     }
   }
+  
 
   onFileSelected(event: any) {
-    this.registerData.profileImage = event.target.files[0];
+    const file = event.target.files[0];
+    if (file) {
+      this.registerData.profileImage = file;
+      console.log('Imagen seleccionada:', file);
+    } else {
+      console.error('No se seleccionó ninguna imagen.');
+    }
+  }
+  
+
+  // Método para obtener usuarios y mostrarlos en la consola
+  getUsers() {
+    this.userService.getUsers().subscribe(
+      (users) => {
+        console.log('Lista de usuarios:', users);
+      },
+      (error) => {
+        console.error('Error al obtener los usuarios:', error);
+      }
+    );
   }
 }

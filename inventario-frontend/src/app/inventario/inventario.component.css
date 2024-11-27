@@ -1,0 +1,32 @@
+/* Limitar el tamaño máximo del contenedor */
+.container {
+    max-width: 900px; /* Ajusta el ancho según sea necesario */
+  }
+  
+  /* Centrar los encabezados de la tabla */
+  .table th {
+    text-align: center;
+  }
+  
+  /* Centrar el contenido de las celdas de la tabla */
+  .table td {
+    vertical-align: middle;
+    text-align: center;
+  }
+  
+  /* Hacer la tabla desplazable y controlar su altura */
+  .table-responsive {
+    max-height: 400px;  /* Ajusta la altura según tus necesidades */
+    overflow-y: auto;  /* Habilita el desplazamiento vertical */
+  }
+  
+  /* Asegura que la tabla ocupe el 100% del ancho del contenedor */
+  .table {
+    width: 100%;  /* Hace que la tabla ocupe todo el ancho disponible */
+  }
+  
+  /* Agrega un margen al final para evitar que el contenido quede demasiado pegado al borde inferior */
+  .modal-body {
+    padding-bottom: 1rem;  /* Puedes ajustarlo según sea necesario */
+  }
+  
