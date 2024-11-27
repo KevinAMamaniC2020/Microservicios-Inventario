@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../services/product.service';
 import { Product } from '../services/product.service';
+import { ReportService } from '../report.service';
 
 @Component({
   selector: 'app-inventario',
@@ -21,7 +22,8 @@ export class InventarioComponent {
 
   constructor(
     private fb: FormBuilder,
-    private productService: ProductService // Inyecta el servicio
+    private productService: ProductService, // Inyecta el servicio
+    private reportService: ReportService
   ) {
     // Crear el formulario con los controles
     this.registroForm = this.fb.group({
@@ -94,6 +96,23 @@ export class InventarioComponent {
       },
       (error) => {
         console.error('Error al eliminar el producto', error);
+      }
+    );
+  }
+
+  exportToPdf() {
+    this.reportService.downloadPdf().subscribe(
+      (response: Blob) => {
+        // Crear un enlace para descargar el archivo
+        const url = window.URL.createObjectURL(response);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'reporte.pdf'; // Nombre del archivo que se descargará
+        a.click();
+        window.URL.revokeObjectURL(url); // Limpiar el objeto URL después de la descarga
+      },
+      (error) => {
+        console.error('Error al descargar el PDF', error);
       }
     );
   }

@@ -1,26 +1,20 @@
 <div class="container mt-3">
   <h2 class="mb-4 mt-5">Gestión de Inventarios</h2>
-  
+
   <!-- Buscador y Botón de Agregar Producto -->
   <div class="d-flex justify-content-between align-items-center mb-3">
     <div class="w-75"> <!-- Esto ajusta el tamaño del buscador -->
-      <input
-        type="text"
-        class="form-control"
-        placeholder="Buscar por nombre o categoría..."
-        [(ngModel)]="searchTerm"
-        (input)="filterItems()"
-      />
+      <input type="text" class="form-control" placeholder="Buscar por nombre o categoría..." [(ngModel)]="searchTerm"
+        (input)="filterItems()" />
     </div>
-    
+    <button class="btn btn-info" (click)="exportToPdf()">
+      <i class="bi bi-download"></i>
+    </button>
     <!-- Botón para abrir el modal de registro (ícono de más) -->
-    <button
-      class="btn btn-warning ms-2"
-      data-bs-toggle="modal"
-      data-bs-target="#registroProductoModal"
-    >
+    <button class="btn btn-warning ms-2" data-bs-toggle="modal" data-bs-target="#registroProductoModal">
       <i class="bi bi-plus-circle-fill"></i> <!-- Icono de más -->
     </button>
+    
   </div>
 
   <!-- Tabla -->
@@ -57,58 +51,31 @@
   </div>
 
   <!-- Modal de Registro de Producto -->
-  <div
-    class="modal fade"
-    id="registroProductoModal"
-    tabindex="-1"
-    aria-labelledby="registroProductoModalLabel"
-    aria-hidden="true"
-  >
+  <div class="modal fade" id="registroProductoModal" tabindex="-1" aria-labelledby="registroProductoModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="registroProductoModalLabel">
             Registrar Producto
           </h5>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
           <form [formGroup]="registroForm" (ngSubmit)="registrarProducto()">
             <!-- Formulario de registro -->
             <div class="mb-3">
               <label for="name" class="form-label">Nombre</label>
-              <input
-                type="text"
-                class="form-control"
-                id="name"
-                formControlName="name"
-                required
-              />
+              <input type="text" class="form-control" id="name" formControlName="name" required />
             </div>
             <div class="mb-3">
               <label for="code" class="form-label">Codigo</label>
-              <input
-                type="text"
-                class="form-control"
-                id="code"
-                formControlName="code"
-                required
-              />
+              <input type="text" class="form-control" id="code" formControlName="code" required />
             </div>
 
             <div class="mb-3">
               <label for="category" class="form-label">Categoría</label>
-              <select
-                class="form-select"
-                id="category"
-                formControlName="category"
-                required
-              >
+              <select class="form-select" id="category" formControlName="category" required>
                 <option value="">Seleccionar categoría</option>
                 <option value="Oficina">Oficina</option>
                 <option value="Papelería">Papelería</option>
@@ -118,35 +85,17 @@
 
             <div class="mb-3">
               <label for="description" class="form-label">Descripción</label>
-              <input
-                type="text"
-                class="form-control"
-                id="description"
-                formControlName="description"
-                required
-              />
+              <input type="text" class="form-control" id="description" formControlName="description" required />
             </div>
 
             <div class="mb-3">
               <label for="quantity" class="form-label">Cantidad</label>
-              <input
-                type="number"
-                class="form-control"
-                id="quantity"
-                formControlName="quantity"
-                required
-              />
+              <input type="number" class="form-control" id="quantity" formControlName="quantity" required />
             </div>
 
             <div class="mb-3">
               <label for="price" class="form-label">Precio Unitario</label>
-              <input
-                type="number"
-                class="form-control"
-                id="price"
-                formControlName="price"
-                required
-              />
+              <input type="number" class="form-control" id="price" formControlName="price" required />
             </div>
 
             <div class="modal-footer">
